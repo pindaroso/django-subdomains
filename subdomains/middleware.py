@@ -29,7 +29,7 @@ class SubdomainMiddleware(MiddlewareMixin):
         Returns the domain that will be used to identify the subdomain part
         for this request.
         """
-        return get_domain()
+        return get_domain(request=request)
 
     def process_request(self, request):
         """
