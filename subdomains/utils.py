@@ -13,9 +13,9 @@ except Exception:
     from django.urls import reverse as simple_reverse
 
 
-def current_site_domain():
+def current_site_domain(request=None):
     from django.contrib.sites.models import Site
-    domain = Site.objects.get_current().domain
+    domain = Site.objects.get_current(request=request).domain
 
     prefix = 'www.'
     if getattr(settings, 'REMOVE_WWW_FROM_DOMAIN', False) \
@@ -59,7 +59,9 @@ def reverse(viewname, subdomain=None, scheme=None, args=None, kwargs=None,
     """
     urlconf = settings.SUBDOMAIN_URLCONFS.get(subdomain, settings.ROOT_URLCONF)
 
-    domain = get_domain()
+    request = kwargs.get('request')
+
+    domain = get_domain(request=request)
     if subdomain is not None:
         domain = '%s.%s' % (subdomain, domain)
 
